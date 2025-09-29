@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using InventoryManagement.Models.DTOs;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 
@@ -13,5 +14,11 @@ namespace InventoryManagement.Models
         [BsonElement("items")]
         [JsonPropertyName("items")]
         public List<string> movieIds { get; set; } = null!;
+
+        public Playlist(CreatePlaylistRequest request)
+        {
+            username = request.username;
+            movieIds = request.movieIds;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using InventoryManagement.Models;
+using InventoryManagement.Models.DTOs;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -20,10 +21,11 @@ namespace InventoryManagement.Services
         {
             return await _playlistCollection.Find(new BsonDocument()).ToListAsync();
         }
-        public async Task CreateAsync(Playlist playlist)
+        public async Task<Playlist> CreateAsync(CreatePlaylistRequest request)
         {
+            Playlist playlist = new Playlist(request);
             await _playlistCollection.InsertOneAsync(playlist);
-            return;
+            return playlist;
         }
         public async Task AddTpPlaylistAsync(string id, string movieId)
         {

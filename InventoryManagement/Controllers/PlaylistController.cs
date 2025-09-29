@@ -1,4 +1,5 @@
 ﻿using InventoryManagement.Models;
+using InventoryManagement.Models.DTOs;
 using InventoryManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,15 +10,20 @@ namespace InventoryManagement.Controllers
     public class PlaylistController: Controller
     {
         private readonly MongoDBService _mongoDBService;
+        public PlaylistController(MongoDBService mongoDBService)
+        {
+            _mongoDBService = mongoDBService;
+        }
         [HttpGet]
         public async Task<List<Playlist>> Get()
         {
             return await _mongoDBService.GetAsync();
         }
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Playlist playlist)
+        public async Task<IActionResult> Post([FromBody] CreatePlaylistRequest request)
         {
-            await _mongoDBService.CreateAsync(playlist);
+            var playlist = await _mongoDBService.CreateAsync(request);
+
             return CreatedAtAction(nameof(Get), new { id = playlist.Id }, playlist);
         }
         [HttpPut("id")]
